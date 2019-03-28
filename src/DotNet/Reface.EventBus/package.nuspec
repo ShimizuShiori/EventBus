@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!--*-->
+    <id>Reface.EventBus</id>
+    <!--*-->
+    <version>3.0.0</version>
+    <title>Reface.EventBus</title>
+    <!--*-->
+    <authors>ShimizuShiori</authors>
+    <owners>ShimizuShiori</owners>
+    <licenseUrl>https://github.com/ShimizuShiori/EventBus/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ShimizuShiori/EventBus</projectUrl>
+    <!--
+    <iconUrl></iconUrl>
+-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <!--*-->
+    <description>EventBus in C#</description>
+    <!--*-->
+    <releaseNotes>将 .net 运行时改为 4.0</releaseNotes>
+    <copyright>Copyright © HP Inc. 2019</copyright>
+    <tags>
+    </tags>
+    <dependencies>
+      <!--
+      <dependency id="SampleDependency" version="1.0" />
+-->
+    </dependencies>
+  </metadata>
+</package>

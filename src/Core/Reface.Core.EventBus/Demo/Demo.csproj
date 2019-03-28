@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reface.Core.EventBus.Autofac\Reface.Core.EventBus.Autofac.csproj" />
+    <ProjectReference Include="..\Reface.Core.EventBus\Reface.Core.EventBus.csproj" />
+  </ItemGroup>
+
+</Project>
