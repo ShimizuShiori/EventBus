@@ -18,6 +18,8 @@ namespace Reface.EventBus
 
         public Event(object source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             Source = source;
         }
     }
