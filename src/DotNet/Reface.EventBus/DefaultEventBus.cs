@@ -8,17 +8,17 @@ namespace Reface.EventBus
     public class DefaultEventBus : IEventBus
     {
         private readonly ICache cache;
-        private readonly IEnumerable<IEventListener> allListeners;
+        private readonly IEventListenerFinder eventListenerFinder;
 
         public DefaultEventBus(ICache cache, IEventListenerFinder eventListenerFinder)
         {
             this.cache = cache;
-            allListeners = eventListenerFinder.CreateAllEventListeners();
+            this.eventListenerFinder = eventListenerFinder;
         }
 
         public DefaultEventBus(IEventListenerFinder eventListenerFinder) : this(new DefaultCache(), eventListenerFinder)
         {
-
+            Console.WriteLine("DefaultEventBus.Ctor");
         }
 
         /// <summary>
@@ -31,6 +31,7 @@ namespace Reface.EventBus
 
         public void Publish(Event @event)
         {
+            var allListeners = this.eventListenerFinder.CreateAllEventListeners();
             Type eventType = @event.GetType();
             Dictionary<Type, ListenerInfo> infoMap = cache.GetOrCreate<Dictionary<Type, ListenerInfo>>($"ListenerInfosOf${eventType.FullName}", () =>
             {
