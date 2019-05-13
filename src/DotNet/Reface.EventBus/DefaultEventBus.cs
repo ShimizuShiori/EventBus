@@ -18,7 +18,6 @@ namespace Reface.EventBus
 
         public DefaultEventBus(IEventListenerFinder eventListenerFinder) : this(new DefaultCache(), eventListenerFinder)
         {
-            Console.WriteLine("DefaultEventBus.Ctor");
         }
 
         /// <summary>
