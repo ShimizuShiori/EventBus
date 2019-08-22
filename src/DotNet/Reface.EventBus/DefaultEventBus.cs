@@ -1,6 +1,7 @@
 ﻿using Reface.EventBus.EventListenerFinders;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
 
 namespace Reface.EventBus
@@ -35,17 +36,27 @@ namespace Reface.EventBus
             Dictionary<Type, ListenerInfo> infoMap = cache.GetOrCreate<Dictionary<Type, ListenerInfo>>($"ListenerInfosOf${eventType.FullName}", () =>
             {
                 Dictionary<Type, ListenerInfo> result = new Dictionary<Type, ListenerInfo>();
-                foreach (var listener in allListeners)
+                IEnumerable<ListenerInfo> ListenerInfos = allListeners.Select(listener =>
                 {
+
                     Type listenerType = listener.GetType();
                     Type argType = listener.GetType().GetInterface(typeof(IEventListener<>).FullName).GetGenericArguments()[0];
                     bool canTrigger = argType.IsAssignableFrom(eventType);
-                    result[listenerType] = new ListenerInfo()
+                    int priority = 0;
+                    if (listener is IPrioritized)
                     {
+                        priority = (listener as IPrioritized).Priority;
+                    }
+                    return new ListenerInfo()
+                    {
+                        ListenerType = listenerType,
                         CanTrigger = canTrigger,
-                        ListenerEventType = argType
+                        ListenerEventType = argType,
+                        Priority = priority
                     };
-                }
+                }).OrderBy(x => x.Priority);
+                foreach (var info in ListenerInfos)
+                    result[info.ListenerType] = info;
                 return result;
             });
             foreach (var listener in allListeners)
