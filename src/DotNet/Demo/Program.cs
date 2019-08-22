@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Demo.Events;
+using Reface.EventBus;
+using System;
 
 namespace Demo
 {
@@ -10,6 +8,13 @@ namespace Demo
     {
         static void Main(string[] args)
         {
+            // 构造事件总线
+            IEventBus eventBus = new DefaultEventBus();
+
+            // 发布消息
+            eventBus.Publish(new ConsoleStarted(1));
+
+            Console.ReadLine();
         }
     }
 }

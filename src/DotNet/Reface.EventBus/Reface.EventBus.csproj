@@ -58,6 +58,7 @@
     <Compile Include="IEventListener.cs" />
     <Compile Include="IEventListenerFinder.cs" />
     <Compile Include="IEventBus.cs" />
+    <Compile Include="IPrioritized.cs" />
     <Compile Include="ListenerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
