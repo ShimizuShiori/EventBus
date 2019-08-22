@@ -7,7 +7,7 @@
 ### 1.1 安装
 
 ```cmd
-PM> Install-Package Reface.EventBus -Version 3.0.0
+PM> Install-Package Reface.EventBus -Version 3.1.0
 ```
 
 ### 1.2 运行环境
@@ -106,3 +106,27 @@ namespace ConsoleApp1.Listeners
 * **Reface.EventBus.EventListenerFinders.ConfigurationEventListenerFinder** 通过 config 文件来注册
 * **Reface.EventBus.EventListenerFinders.AssembliesEventListenerFinder** 通过注册程序集，并返反射其中的类型来得到所有实现了 **Reface.EventBus.IEventListenerFinder** 的成员
 * **Reface.EventBus.EventListenerFinders.DefaultEventListenerFinder** 通过编码的方式注册监听者
+
+# 3 与 autofac 集成
+
+比较简单的方法是使用 Autofac 先将 DefaultEventBus 注册，再以程序集的形式注册所有继承于 Event 的类型。
+然后创建一个新的 **Reface.EventBus.IEventListenerFinder** 实现类，大致如下：
+
+```c#
+    public class AutofacEventListenerFinder : IEventListenerFinder
+    {
+        private readonly ILifetimeScope lifetimeScope;
+
+        public AutofacEventListenerFinder(ILifetimeScope lifetimeScope)
+        {
+            this.lifetimeScope = lifetimeScope;
+        }
+
+        public IEnumerable<IEventListener> CreateAllEventListeners()
+        {
+            return this.lifetimeScope.Resolve<IEnumerable<IEventListener>>();
+        }
+    }
+```
+
+这样就可以通过 Autofac 的容器创建 IEventBus 实例，然后 Pulish 一个事件，被注册的程序集中的所有 Listener 就都会被触发，但是目前没有控制触发时的顺序。
