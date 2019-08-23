@@ -116,3 +116,7 @@ namespace ConsoleApp1.Listeners
 # 3 与 autofac 集成
 
 项目 **Demo.Autofac** 中会演示如何与 autofac 集成，而避免对每一个 EventListener 都要写配置文件的情景
+
+---
+
+由于客观因素，暂时不对 Core 版本进行同步开发
