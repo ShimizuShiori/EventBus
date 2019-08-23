@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Reface.EventBus
 {
+    /// <summary>
+    /// provide all EventListeners to DefaultEventBus
+    /// </summary>
     public interface IEventListenerFinder
     {
         IEnumerable<IEventListener> CreateAllEventListeners();

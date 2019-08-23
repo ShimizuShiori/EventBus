@@ -50,6 +50,11 @@ namespace Reface.EventBus
             }
         }
 
+        /// <summary>
+        /// Sort all EventListeners b Priority
+        /// </summary>
+        /// <param name="listeners"></param>
+        /// <returns></returns>
         private IEnumerable<IEventListener> SortEventListeners(IEnumerable<IEventListener> listeners)
         {
             return listeners.Select(x =>
@@ -66,7 +71,7 @@ namespace Reface.EventBus
             .Select(x => x.L)
             .ToList();
         }
-
+        
         private Dictionary<Type, ListenerInfo> CreateListenerInfos(Type eventType, IEnumerable<IEventListener> allListeners)
         {
             Dictionary<Type, ListenerInfo> result = new Dictionary<Type, ListenerInfo>();
@@ -85,6 +90,12 @@ namespace Reface.EventBus
             return result;
         }
 
+        /// <summary>
+        /// Create Listener MethodInvoker with Emit
+        /// </summary>
+        /// <param name="listenerType"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private Action<IEventListener, object> CreateListenerTrigger(Type listenerType, ListenerInfo info)
         {
             DynamicMethod method = new DynamicMethod("TriggerMethod", null, new Type[] { typeof(IEventListener), typeof(object) });

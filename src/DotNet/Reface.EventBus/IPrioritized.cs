@@ -1,12 +1,12 @@
 ﻿namespace Reface.EventBus
 {
     /// <summary>
-    /// 表示事件允许执行一个值来确定它的执行顺序
+    /// Implement this interface means the EventListener has execute priority
     /// </summary>
     public interface IPrioritized
     {
         /// <summary>
-        /// 优先级，执行时将会按照从小到大的顺序进行执行
+        /// EventListener will be executed first when this value is small
         /// </summary>
         int Priority { get; }
     }

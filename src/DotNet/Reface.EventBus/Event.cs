@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reface.EventBus
 {
     /// <summary>
-    /// 事件
+    /// Event's base class
     /// </summary>
     public class Event
     {
         /// <summary>
-        /// 事件源（事件发起的实例）
+        /// Event sender
         /// </summary>
         public object Source { get; private set; }
 
         /// <summary>
-        /// 事件的上下文对象，可以通过该属性进行事件上下游的信息传递
+        /// Context
         /// </summary>
         public Dictionary<string, object> Context { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source">event sender</param>
         public Event(object source)
         {
             if (source == null)

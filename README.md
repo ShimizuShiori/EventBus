@@ -115,24 +115,4 @@ namespace ConsoleApp1.Listeners
 
 # 3 与 autofac 集成
 
-比较简单的方法是使用 Autofac 先将 DefaultEventBus 注册，再以程序集的形式注册所有继承于 Event 的类型。
-然后创建一个新的 **Reface.EventBus.IEventListenerFinder** 实现类，大致如下：
-
-```c#
-    public class AutofacEventListenerFinder : IEventListenerFinder
-    {
-        private readonly ILifetimeScope lifetimeScope;
-
-        public AutofacEventListenerFinder(ILifetimeScope lifetimeScope)
-        {
-            this.lifetimeScope = lifetimeScope;
-        }
-
-        public IEnumerable<IEventListener> CreateAllEventListeners()
-        {
-            return this.lifetimeScope.Resolve<IEnumerable<IEventListener>>();
-        }
-    }
-```
-
-这样就可以通过 Autofac 的容器创建 IEventBus 实例，然后 Pulish 一个事件，被注册的程序集中的所有 Listener 就都会被触发
+项目 **Demo.Autofac** 中会演示如何与 autofac 集成，而避免对每一个 EventListener 都要写配置文件的情景

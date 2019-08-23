@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reface.EventBus
+﻿namespace Reface.EventBus
 {
     public interface IEventBus
     {
+        /// <summary>
+        /// Publish a event to related EventListeners
+        /// </summary>s
+        /// <param name="event"></param>
         void Publish(Event @event);
     }
 }
