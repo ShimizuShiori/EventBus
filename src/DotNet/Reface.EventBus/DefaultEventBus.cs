@@ -56,6 +56,7 @@ namespace Reface.EventBus
                     Debug.WriteLine($"未发现监听器 [{listenerType.FullName}] 的信息，可能与缓存有关，清除缓存将重新发布");
                     cache.Clean(cacheKey);
                     this.Publish(@event, time + 1);
+                    return;
                 }
             }
 
