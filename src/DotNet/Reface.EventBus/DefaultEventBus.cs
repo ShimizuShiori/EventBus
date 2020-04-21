@@ -1,6 +1,7 @@
 ﻿using Reface.EventBus.EventListenerFinders;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 
@@ -31,11 +32,32 @@ namespace Reface.EventBus
 
         public void Publish(Event @event)
         {
+            this.Publish(@event, 0);
+        }
+
+        public void Publish(Event @event, int time)
+        {
+
             var allListeners = this.eventListenerFinder.CreateAllEventListeners();
             allListeners = this.SortEventListeners(allListeners);
             Type eventType = @event.GetType();
-            Dictionary<Type, ListenerInfo> infoMap = cache.GetOrCreate($"ListenerInfosOf${eventType.FullName}",
+            string cacheKey = $"ListenerInfosOf${eventType.FullName}";
+            Dictionary<Type, ListenerInfo> infoMap = cache.GetOrCreate(cacheKey,
                 () => CreateListenerInfos(eventType, allListeners));
+
+            foreach (var listener in allListeners)
+            {
+                Type listenerType = listener.GetType();
+                if (!infoMap.ContainsKey(listenerType))
+                {
+                    if (time != 0)
+                        throw new KeyNotFoundException($"未发现监听器 [{listenerType.FullName}] 的信息，经清除缓存后，依然无法正常发布。");
+
+                    Debug.WriteLine($"未发现监听器 [{listenerType.FullName}] 的信息，可能与缓存有关，清除缓存将重新发布");
+                    cache.Clean(cacheKey);
+                    this.Publish(@event, time + 1);
+                }
+            }
 
             foreach (var listener in allListeners)
             {
@@ -49,6 +71,8 @@ namespace Reface.EventBus
                 }
             }
         }
+
+
 
         /// <summary>
         /// Sort all EventListeners b Priority
@@ -71,7 +95,7 @@ namespace Reface.EventBus
             .Select(x => x.L)
             .ToList();
         }
-        
+
         private Dictionary<Type, ListenerInfo> CreateListenerInfos(Type eventType, IEnumerable<IEventListener> allListeners)
         {
             Dictionary<Type, ListenerInfo> result = new Dictionary<Type, ListenerInfo>();

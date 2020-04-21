@@ -4,11 +4,11 @@
     <!--*-->
     <id>Reface.EventBus</id>
     <!--*-->
-    <version>3.2.0</version>
+    <version>3.2.3</version>
     <title>Reface.EventBus</title>
     <!--*-->
-    <authors>ShimizuShiori</authors>
-    <owners>ShimizuShiori</owners>
+    <authors>Felix</authors>
+    <owners>Felix</owners>
     <licenseUrl>https://github.com/ShimizuShiori/EventBus/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/ShimizuShiori/EventBus</projectUrl>
     <!--
@@ -18,10 +18,6 @@
     <!--*-->
     <description>EventBus in C#</description>
     <!--*-->
-    <releaseNotes>
-      + 添加验证，事件源不能为 null
-      + 当发布消息时，才获取所有事件监听者
-    </releaseNotes>
     <copyright>Copyright © HP Inc. 2019</copyright>
     <tags>
     </tags>
