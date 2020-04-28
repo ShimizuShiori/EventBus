@@ -6,25 +6,26 @@
 
 ### 1.1 安装
 
-```cmd
-PM> Install-Package Reface.EventBus -Version 3.2.0
-```
+通过 Nuget 你就可以安装使用它。
+
+* [.NetFramework](https://www.nuget.org/packages/Reface.EventBus/)
+* [.NetCore](https://www.nuget.org/packages/Reface.Core.EventBus/3.2.11)
 
 ### 1.2 运行环境
 
-* DotNet 4.0
+Reface.EventBus 工作在 .NetFramework 上
+Reface.Core.EventBus 工作在 .NetCore 上
 
 ### 1.3 依赖项
 
-* 无
+Reface.EventBus 无依赖项
+
+Reface.Core.EventBus 依赖 Microsoft.Extensions.DependencyInjection
 
 ## 2 使用方法
 
-### 2.1 什么是事件总线
 
-
-
-### 2.2 消息发布
+### 2.1 消息发布
 
 **定义事件**
 ```csharp
@@ -54,10 +55,10 @@ class Program
     }
 }
 ```
-### 2.3 消息监听
+### 2.2 消息监听
 
 
-#### 2.3.1 如何监听
+#### 2.2.1 如何监听
 
 实现 IEventListener<TEvent> 即可成为监听者
 
@@ -76,7 +77,7 @@ namespace ConsoleApp1.Listeners
     }
 }
 ```
-#### 2.3.2 如何添加监听者
+#### 2.2.2 如何添加监听者
 
 为了松耦合，我们不会要求手动的将监听者添加到 EventBus 实例中去。
 比较简单的方法是通过 config 文件注册监听者。
@@ -97,7 +98,7 @@ namespace ConsoleApp1.Listeners
   </eventBus>
 </configuration>
 ```
-#### 2.3.3 其它方法添加监听者
+#### 2.2.3 其它方法添加监听者
 
 除了通过 config 文件的方法，我们还提供了其它方法来注册监听者。
 
@@ -107,16 +108,25 @@ namespace ConsoleApp1.Listeners
 * **Reface.EventBus.EventListenerFinders.AssembliesEventListenerFinder** 通过注册程序集，并返反射其中的类型来得到所有实现了 **Reface.EventBus.IEventListenerFinder** 的成员
 * **Reface.EventBus.EventListenerFinders.DefaultEventListenerFinder** 通过编码的方式注册监听者
 
-#### 2.3.4 定义执行顺序
+#### 2.2.4 定义执行顺序
 
 向 **IEventListener<TEvent>** 的实现类再添加 IPrioritized 接口，并实现 **Priority** 属性，便可以指定执行的顺序。
 * Priority 的值越小，越先执行
 * 未实现 IPrioritized 的 IEventListener 认为 Priority = 0
 
-# 3 与 autofac 集成
+# 3. 集成
 
-项目 **Demo.Autofac** 中会演示如何与 autofac 集成，而避免对每一个 EventListener 都要写配置文件的情景
+## 3.1 .NetCore 与 ServiceCollection 集成
 
----
+与 *IOC/DI* 组件的集成，可以免去对监听者一一注册的过程。
+在 .NetCore 中，通过为 ServiceCollection 注册必要组件和按程序集注册监听器，可以实现这些功能：
 
-由于客观因素，暂时不对 Core 版本进行同步开发
+```csharp
+var provider = new ServiceCollection()
+  .AddEventBus() // 添加 EventBus 功能
+  .AddEventListeners(this.GetType().Assembly)
+  .AddEventListeners(typeof(IService).Assembly)
+  .BuildServiceProvider();
+IEventBus eventBus = provider.GetService<IEventBus>();
+eventBus.Publish(new TestEvent());
+```
