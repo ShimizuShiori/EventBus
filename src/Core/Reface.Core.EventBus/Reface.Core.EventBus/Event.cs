@@ -1,24 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reface.Core.EventBus
 {
     /// <summary>
-    /// 事件
+    /// Event's base class
     /// </summary>
     public class Event
     {
         /// <summary>
-        /// 事件源（事件发起的实例）
+        /// Event sender
         /// </summary>
         public object Source { get; private set; }
 
+        /// <summary>
+        /// Context
+        /// </summary>
+        public Dictionary<string, object> Context { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source">event sender</param>
         public Event(object source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             Source = source;
+            this.Context = new Dictionary<string, object>();
         }
     }
 }

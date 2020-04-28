@@ -1,11 +1,7 @@
-﻿using System;
+﻿using Demo.Events;
+using Microsoft.Extensions.DependencyInjection;
 using Reface.Core.EventBus;
-using Autofac;
-using Demo.EventListeners;
-using System.Collections;
-using System.Collections.Generic;
-using Reface.Core.EventBus.EventListenerFinders;
-using Demo.Events;
+using System;
 
 namespace Demo
 {
@@ -13,22 +9,17 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            ContainerBuilder builder = new ContainerBuilder();
-            builder.RegisterType<OutputWhenConsoleStarted>().AsImplementedInterfaces().InstancePerLifetimeScope();
-            builder.RegisterType<ConfirmCommand>().AsImplementedInterfaces().InstancePerLifetimeScope();
-            builder.RegisterType<AutofacEventListenerFinder>().AsImplementedInterfaces().InstancePerLifetimeScope();
-            builder.RegisterType<DefaultEventBus>().AsImplementedInterfaces().InstancePerLifetimeScope();
-            var container = builder.Build();
+            ServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection
+                .AddEventBus()
+                .AddEventListeners(typeof(Program).Assembly);
 
-            IEventBus eb = container.Resolve<IEventBus>();
+            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            eb.Publish(new ConsoleStartedEvent());
+            IEventBus eventBus = serviceProvider.GetService<IEventBus>();
 
-            while (true)
-            {
-                string command = Console.ReadLine();
-                eb.Publish(new CommandRevicedEvent(command));
-            }
+            eventBus.Publish(new CmdStartedEvent(new Program()));
+
         }
     }
 }

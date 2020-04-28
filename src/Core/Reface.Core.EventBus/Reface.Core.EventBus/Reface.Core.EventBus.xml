@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Reface.Core.EventBus</name>
+    </assembly>
+    <members>
+        <member name="M:Reface.Core.EventBus.DefaultEventBus.SortEventListeners(System.Collections.Generic.IEnumerable{Reface.Core.EventBus.IEventListener})">
+            <summary>
+            Sort all EventListeners b Priority
+            </summary>
+            <param name="listeners"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Reface.Core.EventBus.DefaultEventBus.CreateListenerTrigger(System.Type,Reface.Core.EventBus.ListenerInfo)">
+            <summary>
+            Create Listener MethodInvoker with Emit
+            </summary>
+            <param name="listenerType"></param>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Reface.Core.EventBus.Event">
+            <summary>
+            Event's base class
+            </summary>
+        </member>
+        <member name="P:Reface.Core.EventBus.Event.Source">
+            <summary>
+            Event sender
+            </summary>
+        </member>
+        <member name="P:Reface.Core.EventBus.Event.Context">
+            <summary>
+            Context
+            </summary>
+        </member>
+        <member name="M:Reface.Core.EventBus.Event.#ctor(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="source">event sender</param>
+        </member>
+        <member name="T:Reface.Core.EventBus.IPrioritized">
+            <summary>
+            Implement this interface means the EventListener has execute priority
+            </summary>
+        </member>
+        <member name="P:Reface.Core.EventBus.IPrioritized.Priority">
+            <summary>
+            EventListener will be executed first when this value is small
+            </summary>
+        </member>
+    </members>
+</doc>
