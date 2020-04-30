@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reface.EventBus", "Reface.EventBus\Reface.EventBus.csproj", "{7DFC86BB-16BE-4C8C-A5FE-6EB81FC017BC}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{F1F303C0-040D-4609-B091-167F496B3FA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Autofac", "Demo.Autofac\Demo.Autofac.csproj", "{F5328689-6C9F-4C4E-B16B-52EBBEE14A53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reface.EventBus.Tests", "Reface.EventBus.Tests\Reface.EventBus.Tests.csproj", "{4A74E7D0-B746-462E-8E22-8CAF9FB683D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{F5328689-6C9F-4C4E-B16B-52EBBEE14A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5328689-6C9F-4C4E-B16B-52EBBEE14A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5328689-6C9F-4C4E-B16B-52EBBEE14A53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A74E7D0-B746-462E-8E22-8CAF9FB683D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A74E7D0-B746-462E-8E22-8CAF9FB683D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A74E7D0-B746-462E-8E22-8CAF9FB683D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A74E7D0-B746-462E-8E22-8CAF9FB683D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

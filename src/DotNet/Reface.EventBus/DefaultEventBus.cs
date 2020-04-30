@@ -84,7 +84,7 @@ namespace Reface.EventBus
         {
             return listeners.Select(x =>
             {
-                int p = 0;
+                int p = int.MaxValue;
                 if (x is IPrioritized) p = ((IPrioritized)x).Priority;
                 return new
                 {

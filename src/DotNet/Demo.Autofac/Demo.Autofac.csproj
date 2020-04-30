@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacEventListenerFinder.cs" />
+    <Compile Include="CmdProcess.cs" />
+    <Compile Include="Events\CommandReadEvent.cs" />
     <Compile Include="Events\ConsoleStarted.cs" />
     <Compile Include="Listeners\OnConsoleStarted01.cs" />
     <Compile Include="Listeners\OnConsoleStarted02.cs" />
