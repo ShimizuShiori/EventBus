@@ -11,27 +11,20 @@ namespace Reface.EventBus
 {
     public class DefaultEventBus : IEventBus
     {
-        private readonly ICache cache;
+        private readonly ICache cache = EventBusConfiguration.Cache;
         private readonly IEventListenerFinder eventListenerFinder;
-        private readonly IMapper mapper = new DefaultMapper();
+        private readonly IMapper mapper = EventBusConfiguration.Mapper;
 
-        public DefaultEventBus(ICache cache, IEventListenerFinder eventListenerFinder)
+        public DefaultEventBus(IEventListenerFinder eventListenerFinder)
         {
-            this.cache = cache;
             this.eventListenerFinder = eventListenerFinder;
         }
 
-        public DefaultEventBus(IEventListenerFinder eventListenerFinder) : this(new DefaultCache(), eventListenerFinder)
-        {
-        }
-
-        /// <summary>
-        /// 默认使用配置文件中的 eventBus section 来加载事件监听器
-        /// </summary>
         public DefaultEventBus() : this(new ConfigurationEventListenerFinder())
         {
 
         }
+
 
         public void Publish(Event @event)
         {
@@ -155,17 +148,7 @@ namespace Reface.EventBus
             allListeners = this.SortEventListeners(allListeners);
             foreach (var listener in allListeners)
             {
-                string eventType = EventTypeAttribute.GetEventType(listener);
-                if (eventType != info.EventType)
-                    continue;
-
-                IEnumerable<MethodInfo> methodInfos = listener.GetType()
-                    .GetMethods()
-                    .Where(method =>
-                    {
-                        string eventName = EventNameAttribute.GetEventName(method);
-                        return eventName == info.EventName;
-                    });
+                var methodInfos = this.GetExecutableMethods(listener, info);
 
                 foreach (var method in methodInfos)
                 {
@@ -185,6 +168,33 @@ namespace Reface.EventBus
 
                 }
             }
+        }
+
+        private IEnumerable<MethodInfo> GetExecutableMethods(IEventListener listener, EventInfo eventInfo)
+        {
+            string cacheKey = $"{listener.GetType().FullName} @ {eventInfo.EventType}.{eventInfo.EventName}";
+            return this.cache.GetOrCreate<IEnumerable<MethodInfo>>(cacheKey, () => GenerateExecutableMethods(listener, eventInfo));
+        }
+
+        private IEnumerable<MethodInfo> GenerateExecutableMethods(IEventListener listener, EventInfo eventInfo)
+        {
+            string eventType = EventTypeAttribute.GetEventType(listener);
+            if (eventType != eventInfo.EventType)
+                return Enumerable.Empty<MethodInfo>();
+
+            return listener.GetType()
+                .GetMethods()
+                .Where(method =>
+                {
+                    var ps = method.GetParameters();
+                    return ps.Length == 0 || ps.Length == 1;
+                })
+                .Where(method =>
+                {
+                    string eventName = EventNameAttribute.GetEventName(method);
+                    return eventName == eventInfo.EventName;
+                }).ToList();
+
         }
     }
 }

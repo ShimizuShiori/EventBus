@@ -42,6 +42,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TinyMapper, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyMapper.3.0.3\lib\net40\TinyMapper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\EventNameAttribute.cs" />
@@ -52,14 +55,15 @@
     <Compile Include="Configuration\ListenerCollection.cs" />
     <Compile Include="DefaultCache.cs" />
     <Compile Include="DefaultEventBus.cs" />
-    <Compile Include="DefaultEventBusOptions.cs" />
     <Compile Include="DefaultMapper.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="EventBusConfiguration.cs" />
     <Compile Include="EventInfo.cs" />
     <Compile Include="EventListenerFinders\AssembliesEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\ConfigurationEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\DefaultEventListenerFinder.cs" />
     <Compile Include="ICache.cs" />
+    <Compile Include="IDefaultEventBusOptions.cs" />
     <Compile Include="IEventListener.cs" />
     <Compile Include="IEventListenerFinder.cs" />
     <Compile Include="IEventBus.cs" />
@@ -67,9 +71,11 @@
     <Compile Include="IPrioritized.cs" />
     <Compile Include="ListenerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TinyMapperMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="package.nuspec" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

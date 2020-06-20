@@ -49,6 +49,7 @@
     <Compile Include="CmdProcess.cs" />
     <Compile Include="Events\CommandReadEvent.cs" />
     <Compile Include="Events\ConsoleStarted.cs" />
+    <Compile Include="Listeners\Echo.cs" />
     <Compile Include="Listeners\OnConsoleStarted01.cs" />
     <Compile Include="Listeners\OnConsoleStarted02.cs" />
     <Compile Include="Listeners\OnUserCreated.cs" />

@@ -17,7 +17,7 @@ namespace Demo.Autofac.Listeners
         [EventName("Created")]
         public void OnCreated2(User2 user)
         {
-            Console.WriteLine("用户 : {0}-{1} 被创建，第二次消息", user.Id, user.Name);
+            Console.WriteLine("用户 : {0}-{1} 被创建，第二次处理", user.Id, user.Name);
         }
     }
 }
