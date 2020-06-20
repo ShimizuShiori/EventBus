@@ -51,6 +51,9 @@
     <Compile Include="Events\ConsoleStarted.cs" />
     <Compile Include="Listeners\OnConsoleStarted01.cs" />
     <Compile Include="Listeners\OnConsoleStarted02.cs" />
+    <Compile Include="Listeners\OnUserCreated.cs" />
+    <Compile Include="Model\User1.cs" />
+    <Compile Include="Model\User2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -44,13 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\EventNameAttribute.cs" />
+    <Compile Include="Attributes\EventTypeAttribute.cs" />
     <Compile Include="Configuration\EventBusSection.cs" />
     <Compile Include="Configuration\EventBusSectionFactory.cs" />
     <Compile Include="Configuration\Listener.cs" />
     <Compile Include="Configuration\ListenerCollection.cs" />
     <Compile Include="DefaultCache.cs" />
     <Compile Include="DefaultEventBus.cs" />
+    <Compile Include="DefaultEventBusOptions.cs" />
+    <Compile Include="DefaultMapper.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="EventInfo.cs" />
     <Compile Include="EventListenerFinders\AssembliesEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\ConfigurationEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\DefaultEventListenerFinder.cs" />
@@ -58,6 +63,7 @@
     <Compile Include="IEventListener.cs" />
     <Compile Include="IEventListenerFinder.cs" />
     <Compile Include="IEventBus.cs" />
+    <Compile Include="IMapper.cs" />
     <Compile Include="IPrioritized.cs" />
     <Compile Include="ListenerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

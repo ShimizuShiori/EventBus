@@ -1,8 +1,10 @@
-﻿using Reface.EventBus.EventListenerFinders;
+﻿using Reface.EventBus.Attributes;
+using Reface.EventBus.EventListenerFinders;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 
 namespace Reface.EventBus
@@ -11,6 +13,7 @@ namespace Reface.EventBus
     {
         private readonly ICache cache;
         private readonly IEventListenerFinder eventListenerFinder;
+        private readonly IMapper mapper = new DefaultMapper();
 
         public DefaultEventBus(ICache cache, IEventListenerFinder eventListenerFinder)
         {
@@ -103,7 +106,19 @@ namespace Reface.EventBus
             foreach (var listener in allListeners)
             {
                 Type listenerType = listener.GetType();
-                Type argType = listener.GetType().GetInterface(typeof(IEventListener<>).FullName).GetGenericArguments()[0];
+                var baseType = listener.GetType().GetInterface(typeof(IEventListener<>).FullName);
+                if (baseType == null)
+                {
+                    result[listenerType] = new ListenerInfo()
+                    {
+                        ListenerType = listenerType,
+                        ListenerEventType = null,
+                        CanTrigger = false
+                    };
+                    continue;
+                }
+
+                Type argType = baseType.GetGenericArguments()[0];
                 bool canTrigger = argType.IsAssignableFrom(eventType);
                 result[listenerType] = new ListenerInfo()
                 {
@@ -132,6 +147,44 @@ namespace Reface.EventBus
             il.Emit(OpCodes.Callvirt, listenerType.GetMethod("Handle", new Type[] { info.ListenerEventType }));
             il.Emit(OpCodes.Ret);
             return (Action<IEventListener, Object>)method.CreateDelegate(typeof(Action<IEventListener, Object>));
+        }
+
+        public void Publish(EventInfo info)
+        {
+            var allListeners = this.eventListenerFinder.CreateAllEventListeners();
+            allListeners = this.SortEventListeners(allListeners);
+            foreach (var listener in allListeners)
+            {
+                string eventType = EventTypeAttribute.GetEventType(listener);
+                if (eventType != info.EventType)
+                    continue;
+
+                IEnumerable<MethodInfo> methodInfos = listener.GetType()
+                    .GetMethods()
+                    .Where(method =>
+                    {
+                        string eventName = EventNameAttribute.GetEventName(method);
+                        return eventName == info.EventName;
+                    });
+
+                foreach (var method in methodInfos)
+                {
+                    var ps = method.GetParameters();
+                    if (ps.Length == 0)
+                    {
+                        method.Invoke(listener, new object[] { });
+                        continue;
+                    }
+
+                    if (ps.Length == 1)
+                    {
+                        object inputObject = this.mapper.Convert(info.EventData, ps[0].ParameterType);
+                        method.Invoke(listener, new object[] { inputObject });
+                        continue;
+                    }
+
+                }
+            }
         }
     }
 }

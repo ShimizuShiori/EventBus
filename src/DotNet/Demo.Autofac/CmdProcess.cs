@@ -1,4 +1,5 @@
 ﻿using Demo.Autofac.Events;
+using Demo.Autofac.Model;
 using Demo.Events;
 using Reface.EventBus;
 using System;
@@ -21,6 +22,9 @@ namespace Demo.Autofac
 
         public void Start()
         {
+            User1 user1 = new User1() { Id = 1, Name = "Felix", Password = "12345678" };
+            eventBus.Publish(new EventInfo("User", "Created", user1));
+
             eventBus.Publish(new ConsoleStarted(this));
             while (true)
             {

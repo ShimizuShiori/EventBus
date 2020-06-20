@@ -7,5 +7,7 @@
         /// </summary>s
         /// <param name="event"></param>
         void Publish(Event @event);
+
+        void Publish(EventInfo info);
     }
 }
