@@ -142,7 +142,7 @@ namespace Reface.EventBus
             return (Action<IEventListener, Object>)method.CreateDelegate(typeof(Action<IEventListener, Object>));
         }
 
-        public void Publish(EventInfo info)
+        public void Publish(IEventDescriptor info)
         {
             var allListeners = this.eventListenerFinder.CreateAllEventListeners();
             allListeners = this.SortEventListeners(allListeners);
@@ -170,13 +170,13 @@ namespace Reface.EventBus
             }
         }
 
-        private IEnumerable<MethodInfo> GetExecutableMethods(IEventListener listener, EventInfo eventInfo)
+        private IEnumerable<MethodInfo> GetExecutableMethods(IEventListener listener, IEventDescriptor eventInfo)
         {
             string cacheKey = $"{listener.GetType().FullName} @ {eventInfo.EventType}.{eventInfo.EventName}";
             return this.cache.GetOrCreate<IEnumerable<MethodInfo>>(cacheKey, () => GenerateExecutableMethods(listener, eventInfo));
         }
 
-        private IEnumerable<MethodInfo> GenerateExecutableMethods(IEventListener listener, EventInfo eventInfo)
+        private IEnumerable<MethodInfo> GenerateExecutableMethods(IEventListener listener, IEventDescriptor eventInfo)
         {
             string eventType = EventTypeAttribute.GetEventType(listener);
             if (eventType != eventInfo.EventType)

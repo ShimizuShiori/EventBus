@@ -8,6 +8,6 @@
         /// <param name="event"></param>
         void Publish(Event @event);
 
-        void Publish(EventInfo info);
+        void Publish(IEventDescriptor info);
     }
 }

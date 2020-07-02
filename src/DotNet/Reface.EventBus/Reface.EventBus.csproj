@@ -58,7 +58,8 @@
     <Compile Include="DefaultMapper.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventBusConfiguration.cs" />
-    <Compile Include="EventInfo.cs" />
+    <Compile Include="EventDescriptor.cs" />
+    <Compile Include="IEventDescriptor.cs" />
     <Compile Include="EventListenerFinders\AssembliesEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\ConfigurationEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\DefaultEventListenerFinder.cs" />
