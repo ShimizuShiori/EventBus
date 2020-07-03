@@ -2,7 +2,7 @@
 
 namespace Reface.EventBus.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class EventTypeAttribute : Attribute
     {
         public string Type { get; private set; }
