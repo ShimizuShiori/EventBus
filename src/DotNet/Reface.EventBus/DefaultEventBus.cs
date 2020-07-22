@@ -20,7 +20,7 @@ namespace Reface.EventBus
             this.eventListenerFinder = eventListenerFinder;
         }
 
-        public DefaultEventBus() : this(new ConfigurationEventListenerFinder())
+        public DefaultEventBus() : this(new ConfigurationEventListenerTypeFinder())
         {
 
         }
