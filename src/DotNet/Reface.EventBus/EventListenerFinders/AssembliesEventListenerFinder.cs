@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Reface.EventBus.EventListenerFinders
 {
-    public class AssembliesEventListenerFinder : IEventListenerFinder
+    public class AssembliesEventListenerFinder : IEventListenerTypeFinder
     {
         private readonly IList<Assembly> assemblies;
         private readonly ICache cache;

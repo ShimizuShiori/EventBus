@@ -3,7 +3,7 @@
     public interface IDefaultEventBusOptions
     {
         ICache Cache { get;  }
-        IEventListenerFinder EventListenerFinder { get;  }
+        IEventListenerTypeFinder EventListenerFinder { get;  }
         IMapper Mapper { get;  }
     }
 }

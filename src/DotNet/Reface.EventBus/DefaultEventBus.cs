@@ -12,10 +12,10 @@ namespace Reface.EventBus
     public class DefaultEventBus : IEventBus
     {
         private readonly ICache cache = EventBusConfiguration.Cache;
-        private readonly IEventListenerFinder eventListenerFinder;
+        private readonly IEventListenerTypeFinder eventListenerFinder;
         private readonly IMapper mapper = EventBusConfiguration.Mapper;
 
-        public DefaultEventBus(IEventListenerFinder eventListenerFinder)
+        public DefaultEventBus(IEventListenerTypeFinder eventListenerFinder)
         {
             this.eventListenerFinder = eventListenerFinder;
         }

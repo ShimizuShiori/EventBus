@@ -5,7 +5,7 @@ using System.Reflection.Emit;
 
 namespace Reface.EventBus.EventListenerFinders
 {
-    public class ConfigurationEventListenerFinder : IEventListenerFinder
+    public class ConfigurationEventListenerFinder : IEventListenerTypeFinder
     {
         private readonly string sectionName;
         private readonly Func<List<IEventListener>> creator;

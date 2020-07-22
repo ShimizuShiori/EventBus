@@ -1,23 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Reface.EventBus.EventListenerFinders
 {
-    public class DefaultEventListenerFinder : IEventListenerFinder
+    public class DefaultEventListenerFinder : IEventListenerTypeFinder
     {
-        private readonly Func<IEnumerable<IEventListener>> factory;
+        private readonly Dictionary<Type, ICollection<Type>> genericListenerTypeMap = new Dictionary<Type, ICollection<Type>>();
+        private readonly ICollection<Type> notGenericListenerTypes;
+        private readonly static string TYPE_NAME_GENERIC_EVENT_LISTENER = typeof(IEventListener<>).FullName;
 
-        public DefaultEventListenerFinder(Func<IEnumerable<IEventListener>> factory)
+        public DefaultEventListenerFinder(IEnumerable<Type> allListenerTypes)
         {
-            this.factory = factory;
+            ICollection<Type> noGenericTypes = new List<Type>();
+
+            foreach (var listenerType in allListenerTypes)
+            {
+                Type eventType;
+                if (!TryGetEventType(listenerType, out eventType))
+                {
+                    noGenericTypes.Add(listenerType);
+                    continue;
+                }
+
+                ICollection<Type> genericListenerTypes;
+                if (!genericListenerTypeMap.TryGetValue(eventType, out genericListenerTypes))
+                {
+                    genericListenerTypes = new List<Type>();
+                    this.genericListenerTypeMap[eventType] = genericListenerTypes;
+                }
+                this.notGenericListenerTypes.Add(listenerType);
+
+            }
         }
 
-        public IEnumerable<IEventListener> CreateAllEventListeners()
+        private bool TryGetEventType(Type listenerType, out Type eventType)
         {
-            return this.factory();
+            Type interfaceType = listenerType.GetInterface(TYPE_NAME_GENERIC_EVENT_LISTENER);
+            eventType = null;
+            if (interfaceType == null)
+                return false;
+
+            eventType = interfaceType.GetGenericArguments()[0];
+            return true;
+        }
+
+        public IEnumerable<Type> FindListenerTypesByEventType(Type eventType)
+        {
+            ICollection<Type> result;
+            if (this.genericListenerTypeMap.TryGetValue(eventType, out result))
+                return result;
+
+            return Enumerable.Empty<Type>();
         }
     }
 }

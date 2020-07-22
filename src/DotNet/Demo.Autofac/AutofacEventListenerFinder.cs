@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Demo.Autofac
 {
-    public class AutofacEventListenerFinder : IEventListenerFinder
+    public class AutofacEventListenerFinder : IEventListenerTypeFinder
     {
         private readonly ILifetimeScope lifetimeScope;
 
