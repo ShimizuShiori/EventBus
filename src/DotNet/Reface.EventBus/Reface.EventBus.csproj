@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Attributes\EventNameAttribute.cs" />
     <Compile Include="Attributes\EventTypeAttribute.cs" />
+    <Compile Include="Attributes\PrioritizedAttribute.cs" />
     <Compile Include="Configuration\EventBusSection.cs" />
     <Compile Include="Configuration\EventBusSectionFactory.cs" />
     <Compile Include="Configuration\Listener.cs" />
@@ -61,8 +62,8 @@
     <Compile Include="EventBusConfiguration.cs" />
     <Compile Include="EventDescriptor.cs" />
     <Compile Include="IEventDescriptor.cs" />
-    <Compile Include="EventListenerFinders\AssembliesEventListenerFinder.cs" />
-    <Compile Include="EventListenerFinders\ConfigurationEventListenerFinder.cs" />
+    <Compile Include="EventListenerFinders\AssembliesEventListenerTypeFinder.cs" />
+    <Compile Include="EventListenerFinders\ConfigurationEventListenerTypeFinder.cs" />
     <Compile Include="EventListenerFinders\DefaultEventListenerTypeFinder.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="IDefaultEventBusOptions.cs" />

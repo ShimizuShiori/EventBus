@@ -4,6 +4,6 @@ namespace Reface.EventBus
 {
     public interface IListenerCreator
     {
-        IEventListener Create(Type listenerType);
+        IEventListener Create(Type listenerType, EventBusConfiguration configuration);
     }
 }

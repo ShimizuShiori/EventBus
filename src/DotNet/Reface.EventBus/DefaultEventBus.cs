@@ -1,8 +1,6 @@
 ﻿using Reface.EventBus.Attributes;
-using Reface.EventBus.EventListenerFinders;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -11,64 +9,38 @@ namespace Reface.EventBus
 {
     public class DefaultEventBus : IEventBus
     {
-        private readonly ICache cache = EventBusConfiguration.Cache;
         private readonly IEventListenerTypeFinder eventListenerFinder;
-        private readonly IMapper mapper = EventBusConfiguration.Mapper;
+        private readonly EventBusConfiguration configuration;
 
-        public DefaultEventBus(IEventListenerTypeFinder eventListenerFinder)
+        public DefaultEventBus(EventBusConfiguration configuration)
         {
-            this.eventListenerFinder = eventListenerFinder;
-        }
-
-        public DefaultEventBus() : this(new ConfigurationEventListenerTypeFinder())
-        {
-
+            this.configuration = configuration;
         }
 
 
         public void Publish(Event @event)
         {
-            this.Publish(@event, 0);
-        }
-
-        public void Publish(Event @event, int time)
-        {
-
-            var allListeners = this.eventListenerFinder.CreateAllEventListeners();
-            allListeners = this.SortEventListeners(allListeners);
             Type eventType = @event.GetType();
-            string cacheKey = $"ListenerInfosOf${eventType.FullName}";
-            Dictionary<Type, ListenerInfo> infoMap = cache.GetOrCreate(cacheKey,
-                () => CreateListenerInfos(eventType, allListeners));
+            IEnumerable<Type> listenerTypes = this.GetListenerTypesByEventType(eventType);
 
-            foreach (var listener in allListeners)
-            {
-                Type listenerType = listener.GetType();
-                if (!infoMap.ContainsKey(listenerType))
-                {
-                    if (time != 0)
-                        throw new KeyNotFoundException($"未发现监听器 [{listenerType.FullName}] 的信息，经清除缓存后，依然无法正常发布。");
+            IEnumerable<IEventListener> eventListeners = listenerTypes
+                .Select(x => this.configuration.ListenerCreator.Create(x, this.configuration));
 
-                    Debug.WriteLine($"未发现监听器 [{listenerType.FullName}] 的信息，可能与缓存有关，清除缓存将重新发布");
-                    cache.Clean(cacheKey);
-                    this.Publish(@event, time + 1);
-                    return;
-                }
-            }
-
-            foreach (var listener in allListeners)
-            {
-                Type listenerType = listener.GetType();
-                var info = infoMap[listenerType];
-                if (info.CanTrigger)
-                {
-                    Action<IEventListener, Object> action = cache.GetOrCreate<Action<IEventListener, Object>>($"TriggerActionOf{listenerType.FullName}",
-                        () => CreateListenerTrigger(listenerType, info));
-                    action(listener, @event);
-                }
-            }
+            foreach (var listener in eventListeners)
+                this.configuration.EventTrigger.Tigger(listener, @event, configuration);
         }
 
+        private IEnumerable<Type> GetListenerTypesByEventType(Type eventType)
+        {
+            string cacheKey = string.Format("ListenerTypesOf{0}", eventType.FullName);
+            return this.configuration.Cache.GetOrCreate<IEnumerable<Type>>(cacheKey, () =>
+            {
+                return this.eventListenerFinder.FindListenerTypesByEventType(eventType)
+                    .Select(x => new { Type = x, Priority = PrioritizedAttribute.GetPriority(x) })
+                    .OrderBy(x => x.Priority)
+                    .Select(x => x.Type);
+            });
+        }
 
 
         /// <summary>

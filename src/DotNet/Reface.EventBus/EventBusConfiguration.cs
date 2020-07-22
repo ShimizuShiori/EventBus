@@ -1,17 +1,21 @@
-﻿namespace Reface.EventBus
+﻿using Reface.EventBus.EventListenerFinders;
+
+namespace Reface.EventBus
 {
-    public static class EventBusConfiguration
+    public class EventBusConfiguration
     {
-        public static ICache Cache { get; set; }
-        public static IMapper Mapper { get; set; }
-
-        public static IListenerCreator ListenerCreator { get; set; }
-
-        static EventBusConfiguration()
+        public ICache Cache { get; set; }
+        public IMapper Mapper { get; set; }
+        public IListenerCreator ListenerCreator { get; set; }
+        public IEventTrigger EventTrigger { get; set; }
+        public IEventListenerTypeFinder ListenerTypeFinder { get; set; }
+        private EventBusConfiguration()
         {
             Cache = new DefaultCache();
             Mapper = new TinyMapperMapper();
             ListenerCreator = new DefaultListenerCreator();
+            EventTrigger = new DefaultEventTrigger();
+            ListenerTypeFinder = new ConfigurationEventListenerTypeFinder();
         }
     }
 }
