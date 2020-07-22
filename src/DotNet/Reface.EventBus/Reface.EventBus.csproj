@@ -55,6 +55,7 @@
     <Compile Include="Configuration\ListenerCollection.cs" />
     <Compile Include="DefaultCache.cs" />
     <Compile Include="DefaultEventBus.cs" />
+    <Compile Include="DefaultListenerCreator.cs" />
     <Compile Include="DefaultMapper.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventBusConfiguration.cs" />
@@ -62,12 +63,13 @@
     <Compile Include="IEventDescriptor.cs" />
     <Compile Include="EventListenerFinders\AssembliesEventListenerFinder.cs" />
     <Compile Include="EventListenerFinders\ConfigurationEventListenerFinder.cs" />
-    <Compile Include="EventListenerFinders\DefaultEventListenerFinder.cs" />
+    <Compile Include="EventListenerFinders\DefaultEventListenerTypeFinder.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="IDefaultEventBusOptions.cs" />
     <Compile Include="IEventListener.cs" />
-    <Compile Include="IEventListenerFinder.cs" />
+    <Compile Include="IEventListenerTypeFinder.cs" />
     <Compile Include="IEventBus.cs" />
+    <Compile Include="IListenerCreator.cs" />
     <Compile Include="IMapper.cs" />
     <Compile Include="IPrioritized.cs" />
     <Compile Include="ListenerInfo.cs" />

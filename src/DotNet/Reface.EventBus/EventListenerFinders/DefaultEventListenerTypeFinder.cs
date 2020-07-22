@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Reface.EventBus.EventListenerFinders
 {
-    public class DefaultEventListenerFinder : IEventListenerTypeFinder
+    public class DefaultEventListenerTypeFinder : IEventListenerTypeFinder
     {
         private readonly Dictionary<Type, ICollection<Type>> genericListenerTypeMap = new Dictionary<Type, ICollection<Type>>();
         private readonly ICollection<Type> notGenericListenerTypes;
         private readonly static string TYPE_NAME_GENERIC_EVENT_LISTENER = typeof(IEventListener<>).FullName;
 
-        public DefaultEventListenerFinder(IEnumerable<Type> allListenerTypes)
+        public DefaultEventListenerTypeFinder(IEnumerable<Type> allListenerTypes)
         {
             ICollection<Type> noGenericTypes = new List<Type>();
 
