@@ -1,6 +1,6 @@
 # 事件总线
 
-这是一个参照 *Java Sprint* 中的 ApplicationContext.publish(message) 的方法实现的事件总线
+这是一个参照 *Java Spring* 中的 ApplicationContext.publish(message) 的方法实现的事件总线
 
 ## 1 基本信息
 
@@ -14,6 +14,7 @@
 ### 1.2 运行环境
 
 Reface.EventBus 工作在 .NetFramework 上
+
 Reface.Core.EventBus 工作在 .NetCore 上
 
 ### 1.3 依赖项
