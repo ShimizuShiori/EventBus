@@ -14,6 +14,7 @@
 ### 1.2 运行环境
 
 Reface.EventBus 工作在 .NetFramework 上
+
 Reface.Core.EventBus 工作在 .NetCore 上
 
 ### 1.3 依赖项
