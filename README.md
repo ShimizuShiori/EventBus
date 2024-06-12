@@ -1,67 +1,88 @@
-# 事件总线
+# EventBus
 
-这是一个参照 *Java Spring* 中的 ApplicationContext.publish(message) 的方法实现的事件总线
+This is an EventBus which refered the `ApplicationContext.publish(message)`, which is used to publish an Event in `Java Spring`.
 
-## 1 基本信息
+Normally, EventHandler should be coupled with the Event directly, which is not a good pratice for multi-solution application.
+This lib provides another different use-case of the Event-Listener parttern: you can separate your EventHandler and Event into different solution or project, and the EventBus can dispatch the event to the **corresponding** EventHandlers.
 
-### 1.1 安装
+**What is a correspocorresponding EventHandler?**
 
-通过 Nuget 你就可以安装使用它。
+_Suppose_ you have an event named `BaseEvent`,
+There is no doubt an EventHandler like the following code can be invoked by the EventBus
+```csharp
+public class BaseHandler: IEventListener<BaseEvent>
+```
+
+Further for, if you have another Event which is an extend of `BaseEvent`, take the following code as an example:
+```csharp
+public class FooEvent: BaseEvent
+```
+It is not only a `FooEvent`, but also a `BaseEvent`, so the EventListener above can handle it as well.
+
+This is the characteristic of this library
+
+## 1 Basic
+
+### 1.1 Install
+
+You can install it via `nuget`
 
 * [.NetFramework](https://www.nuget.org/packages/Reface.EventBus/)
 * [.NetCore](https://www.nuget.org/packages/Reface.Core.EventBus/3.2.11)
 
-### 1.2 运行环境
+### 1.2 Runtime
 
-Reface.EventBus 工作在 .NetFramework 上
+* Reface.EventBus is working based on .NetFramework
+* Reface.Core.EventBus is working based on .NetCore
 
-Reface.Core.EventBus 工作在 .NetCore 上
+### 1.3 Dependencies
 
-### 1.3 依赖项
+Reface.EventBus 
+- _Nothing_
 
-Reface.EventBus 无依赖项
+Reface.Core.EventBus 
+- Microsoft.Extensions.DependencyInjection
 
-Reface.Core.EventBus 依赖 Microsoft.Extensions.DependencyInjection
+## 2 Usage
 
-## 2 使用方法
+### 2.1 Publish a Message
 
+**Define a New Event**
 
-### 2.1 消息发布
-
-**定义事件**
 ```csharp
 /// <summary>
-/// 控制台启动后的事件
+/// This Event will be publish after the console started
 /// </summary>
 public class ConsoleStarted : Reface.EventBus.Event
 {
     public ConsoleStarted(object source) : base(source)
     {
-        Console.WriteLine("控件台启动完毕");
+        Console.WriteLine("Console Started");
     }
 }
 ```
 
-**在控制台启动后触发事件**
+**Publish Event**
+
 ```csharp
 class Program
 {
     static void Main(string[] args)
     {
-        // 构造事件总线
+        // Create an instance of EventBus
         IEventBus eventBus = new DefaultEventBus();
 
-        // 发布消息
+        // Publish the message
         eventBus.Publish(new ConsoleStarted());
     }
 }
 ```
-### 2.2 消息监听
+### 2.2 Event Handler
 
 
-#### 2.2.1 如何监听
+#### 2.2.1 How to listener an event
 
-实现 IEventListener<TEvent> 即可成为监听者
+And class who implements the interface `IEventListener<TEvent>` would be an event listener.
 
 ```csharp
 using ConsoleApp1.Events;
@@ -78,14 +99,14 @@ namespace ConsoleApp1.Listeners
     }
 }
 ```
-#### 2.2.2 如何添加监听者
+#### 2.2.2 How to register a Listener
 
-为了松耦合，我们不会要求手动的将监听者添加到 EventBus 实例中去。
-比较简单的方法是通过 config 文件注册监听者。
+In order to decouple the code,
+You can register the Listener in the config file
 
-**在配置文件中定义事件监听者**
-1. 添加 section
-2. 添加监听者
+**Register listener in web.config / app.config**
+1. add section
+2. add listener
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
